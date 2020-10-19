@@ -27,25 +27,28 @@
 )
 
 (define to (command-line #:args (number-of-levels) (string->number number-of-levels)))
-(define check-fn odd?)
 
 (write-json
   (reverse (for/fold
     (
-      [points (list (if (check-fn 1) 100.0 0))]
+      ; The list needs to have a number in position 0 for the chart to display correctly
+      [points '(-1)]
       [current-level '()]
       [running-count 0]
       [running-total 0]
       #:result points
     )
-    ([i (range 0 to)])
+    ([i (range 0 (+ to 1))])
     ((lambda () (begin
-      (display ".")
+      (display "\r")
+      (display i)
+      (display "/")
+      (display to)
       (flush-output)
 
       (let*-values (
         [(next-level) (next-triangle-level current-level)]
-        [(count total) (percentage-of next-level check-fn)]
+        [(count total) (percentage-of next-level odd?)]
       )
         (values
           (cons (* 100.0 (/ (+ running-count count) (+ running-total total))) points)
