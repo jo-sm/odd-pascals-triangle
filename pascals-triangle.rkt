@@ -1,5 +1,6 @@
 #lang racket
 (require json)
+(require racket/cmdline)
 
 (define (next-triangle-level current-level)
   (define (iter result remaining)
@@ -25,6 +26,7 @@
   (iter 0 0 lst)
 )
 
+(define to (command-line #:args (number-of-levels) (string->number number-of-levels)))
 (define check-fn odd?)
 
 (write-json
@@ -36,7 +38,7 @@
       [running-total 0]
       #:result points
     )
-    ([i (range 0 1500)])
+    ([i (range 0 to)])
     ((lambda () (begin
       (display ".")
       (flush-output)
