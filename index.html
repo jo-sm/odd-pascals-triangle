@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Pascal's triangle odd elements</title>
+    <link rel="stylesheet" href="chart.min.css">
+    <style type="text/css">
+      .container {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="test"></div>
+    </div>
+
+    <script type="text/javascript" src="./highcharts.js"></script>
+    <script>
+      (async () => {
+        const data = await (await fetch('odd.json')).json();
+
+        Highcharts.chart('test', {
+          title: `Percentage of odd numbers in Pascal's triangle, by row`,
+          yAxis: {
+            title: {
+              text: 'Percentage'
+            }
+          },
+          chart: {
+            height: '50%',
+            zoomType: 'xy'
+          },
+          series: [
+            {
+              name: '% odd',
+              data
+            }
+          ]
+        })
+      })();
+    </script>
+  </body>
+</html>
