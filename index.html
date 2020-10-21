@@ -2,46 +2,74 @@
 <html>
   <head>
     <title>Pascal's triangle odd elements</title>
-    <link rel="stylesheet" href="chart.min.css">
     <style type="text/css">
+      html,
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        font-weight: 400;
+        margin: 0;
+        padding: 0;
+      }
+
+      label {
+        display: block;
+      }
+
+      input {
+        width: 100%;
+      }
+
       .container {
         height: 100%;
         width: 100%;
+        display: grid;
+        grid-template-columns: 300px auto;
+      }
+
+      .controls {
+        padding: 0 10px;
+        grid-column-start: 1;
+        grid-column-end: 2:
+      }
+
+      .chart {
+        grid-column-start: 2;
+        grid-column-end: 3;
+        height: 95vh;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <div id="test"></div>
+      <div class="controls">
+        <div>
+          <h3>Pascal's triangle odd number percentages</h3>
+          <p>
+            The chart to the right displays the percentage of odd numbers for each level, cumulatively, for the first 30,001 levels of the Pascal's triangle.
+          </p>
+          <p>
+            Use the sliders below to change the range of the chart. Each step is 250 numbers. To get more precision you can zoom in on a specific region using your mouse.
+          </p>
+          <p>
+            <strong>Warning</strong>: performance drops significantly as the number of displayed points on the graph increase.</p>
+          </p>
+        </div>
+        <div>
+          <label for="min">Minimum value (1)</label>
+          <input type='range' id='min' min="1" max='30001' step='250' value='1'>
+        </div>
+        <div>
+          <label for="max">Maximum value (1001)</label>
+          <input type='range' id='max' min='1' max='30001' step='250' value='1001'>
+        </div>
+      </div>
+      <div id="chart" class="chart"></div>
     </div>
 
     <script type="text/javascript" src="./highcharts.js"></script>
-    <script>
-      (async () => {
-        const data = await (await fetch('odd.json')).json();
-
-        Highcharts.chart('test', {
-          title: `Percentage of odd numbers in Pascal's triangle, by row`,
-          yAxis: {
-            title: {
-              text: 'Percentage'
-            }
-          },
-          xAxis: {
-            min: 1
-          },
-          chart: {
-            height: '50%',
-            zoomType: 'xy'
-          },
-          series: [
-            {
-              name: '% odd',
-              data
-            }
-          ]
-        })
-      })();
-    </script>
+    <script type="text/javascript" src="./main.js"></script>
   </body>
 </html>
