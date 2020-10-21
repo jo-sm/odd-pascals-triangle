@@ -2,16 +2,12 @@
 (require json)
 (require racket/cmdline)
 
-(define (next-triangle-level current-level)
-  (define (iter result remaining)
-    (cond
-      ((eq? (length remaining) 0) result)
-      ((eq? (length remaining) 1) (cons 1 result))
-      (else (iter (cons (+ (car remaining) (car (cdr remaining))) result) (cdr remaining)))
-    )
+(define (triangle-level n)
+  (foldl
+    (lambda (a result) (cons (/ (* (car result) (+ a 1)) (- n a)) result))
+    '(1)
+    (reverse (range 0 n))
   )
-
-  (iter '(1) current-level)
 )
 
 (define (percentage-of lst fn)
@@ -33,7 +29,6 @@
     (
       ; The list needs to have a number in position 0 for the chart to display correctly
       [points '(-1)]
-      [current-level '()]
       [running-count 0]
       [running-total 0]
       #:result points
@@ -46,13 +41,11 @@
       (display to)
       (flush-output)
 
-      (let*-values (
-        [(next-level) (next-triangle-level current-level)]
-        [(count total) (percentage-of next-level odd?)]
+      (let-values (
+        [(count total) (percentage-of (triangle-level i) odd?)]
       )
         (values
           (cons (* 100.0 (/ (+ running-count count) (+ running-total total))) points)
-          next-level
           (+ running-count count)
           (+ running-total total)
         )
